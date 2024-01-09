@@ -1,25 +1,32 @@
 import { Router } from "express";
+import { UserModel } from "../schema/user.js";
 
 const UserRouter = Router();
 
-UserRouter.post('/', (req, res) => {
+UserRouter.post("/", (req, res) => {
   const { body } = req;
-  console.log(body.id, body.password);
-  res.json({
+  const result = UserModel.create({
     id: body.id,
     password: body.password,
-  });
+  })
+  res.json(result);
 });
-UserRouter.get('/', (req, res) => {
-  res.send('GET 요청을 받았습니다.');
+
+UserRouter.get("/", (req, res) => {
+  const user = UserModel.find();
+  res.send(user);
 });
-UserRouter.patch('/:id', (req, res) => {
+
+UserRouter.patch("/:id", (req, res) => {
   const id = req.params.id;
-  res.send(`${id}의 수정 요청을 받았습니다.`);
+  const result = UserModel.findByIdAndUpdate(id, req.body);
+  res.send(result);
 });
-UserRouter.delete('/:id', (req, res) => {
+
+UserRouter.delete("/:id", (req, res) => {
   const id = req.params.id;
-  res.send(`${id}의 삭제 요청을 받았습니다.`);
+  const result = UserModel.findByIdAndDelete(id);
+  res.send(result);
 });
 
 export default UserRouter;
