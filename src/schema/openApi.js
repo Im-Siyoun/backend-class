@@ -7,7 +7,8 @@ const ExchangeSchema = new mongoose.Schema(
     region: { type: String, require: true },
   },
   {
-    timestamps: true,
+    timestamps: false,
+    versionKey: false,
   }
 );
 
