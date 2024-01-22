@@ -19,5 +19,5 @@ mongoose.connect(
 
 app.listen(3000, () => {
   console.log("서버가 실행되었습니다.");
-  scheduleJob('* * * * * *', ExchangeFunction);
+  scheduleJob('0/10 * * * * *', ExchangeFunction);
 });
