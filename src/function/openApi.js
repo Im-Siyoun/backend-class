@@ -1,21 +1,20 @@
 import fetch from "node-fetch";
 import { ExchangeModel } from "../schema/openapi.js";
-import crypto from 'crypto';
-import https from 'https';
-
+import crypto from "crypto";
+import https from "https";
+import dotenv from "dotenv";
 
 const ExchangeFunction = async () => {
-  const authkey = "kKAgmT6sXasOHpBFhqG09VqEX0NMi6ij";
+  dotenv.config();
+  const authkey = process.env.EXCHANGE_AUTH_KEY;
   const data = "AP01";
   const result = await fetch(
     `https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=${authkey}&searchdate=20240122&data=${data}`,
     {
+      rejectUnauthorized: false,
       agent: new https.Agent({
-        connect: {
-          rejectUnauthorized: false,
-          secureOptions: crypto.constants.SSL_OP_LEGACY_SERVER_CONNECT
-        }
-      })
+        secureOptions: crypto.constants.SSL_OP_LEGACY_SERVER_CONNECT,
+      }),
     },
     (error) => {
       console.log(error);
