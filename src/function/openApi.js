@@ -1,10 +1,10 @@
-import { Router } from "express";
 import fetch from "node-fetch";
 import { ExchangeModel } from "../schema/openapi.js";
+import crypto from 'crypto';
+import https from 'https';
 
-const openapiRouter = Router();
 
-openapiRouter.get("/exchange", async (req, res) => {
+const ExchangeFunction = async () => {
   const authkey = "kKAgmT6sXasOHpBFhqG09VqEX0NMi6ij";
   const data = "AP01";
   const result = await fetch(
@@ -31,7 +31,7 @@ openapiRouter.get("/exchange", async (req, res) => {
       region: item.cur_nm,
     });
   });
-  res.send(responsedData);
-});
+  console.log("데이터 가져오기 성공");
+};
 
-export default openapiRouter;
+export default ExchangeFunction;
