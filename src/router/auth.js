@@ -1,17 +1,18 @@
 import { Router } from "express";
-import { UserModel } from "../schema/user";
+import { UserModel } from "../schema/user.js";
 import jwt from "jsonwebtoken";
 
 const AuthRouter = Router();
 
-AuthRouter.post("/login", (req, res) => {
+AuthRouter.post("/login", async (req, res) => {
   const key = "1234qwer";
   const { id, password } = req.body;
-  const user = UserModel.find({ id: id });
+  const user = await UserModel.findOne({ id: id });
+  console.log(user);
   if (!user) {
-    res.json({ message: "사용자를 찾을 수 없습니다!" });
+    return res.json({ message: "사용자를 찾을 수 없습니다!" });
   } else if (user.password !== password) {
-    res.json({ message: "비밀번호가 틀립니다!" });
+    return res.json({ message: "비밀번호가 틀립니다!" });
   }
   const token = jwt.sign(
     {
@@ -25,8 +26,10 @@ AuthRouter.post("/login", (req, res) => {
     }
   );
 
-  res.json({
+  return res.json({
     message: "성공적으로 로그인 되었습니다.",
     token: token,
   });
 });
+
+export default AuthRouter;
